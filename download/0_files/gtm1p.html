@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!-- saved from url=(0168)https://www.tripadvisor.com/static/gtm/gtm1p.html?gtmParams=&parentDomain=https%3A%2F%2Fwww.tripadvisor.com&gclid=null&targetingConsent=granted&analyticsConsent=granted -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Google Tag Manager -->
+    <script type="text/javascript" async="" src="./destination"></script><script async="" src="./gtm(1).js"></script><script>
+	window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        // Add consent
+        const targetingConsent = urlSearchParams.get('targetingConsent');
+        gtag('consent', 'default', {
+            'ad_storage': targetingConsent || 'denied',
+            'ad_user_data': targetingConsent || 'denied',
+            'ad_personalization': targetingConsent || 'denied',
+            'analytics_storage': urlSearchParams.get('analyticsConsent') || 'denied'
+        });
+        const gtmParams = urlSearchParams.get('gtmParams') || "";
+        const gtmContainerId = urlSearchParams.get('gtmContainerId') || "GTM-MNJM3CSJ";
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                          'gtm.start':
+                              new Date().getTime(), event: 'gtm.js'
+                      });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl + gtmParams;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', gtmContainerId);
+    </script>
+    <!-- End Google Tag Manager -->
+<script attributionsrc="" type="text/javascript" async="" src="./f(15).txt"></script></head>
+<body>
+<!-- Message Communication between iframe and TA main document-->
+<script>
+    // Domain from which the script is invoked
+    // Eg: webml,hare,etc
+    const parentDomain = urlSearchParams.get('parentDomain');
+    let messagePort; // ref to store message port for gtm communication
+
+    window.addEventListener('message', onMessage);
+
+    function onGTMMessage(e) {
+        window.dataLayer.push(e.data);
+    }
+
+    function onMessage(msg) {
+        if (msg.origin === parentDomain && msg.ports && msg.ports[0] && msg.data === "initGTMMessagePort") {
+            messagePort = msg.ports[0];
+            messagePort.onmessage = onGTMMessage;
+        }
+    }
+</script>
+
+
+<iframe allow="join-ad-interest-group" data-tagging-id="AW-1070639009/L9VBCPG6tLMZEKHPwv4D" data-load-time="1726158119323" height="0" width="0" src="./1070639009(2).html" style="display: none; visibility: hidden;"></iframe><script type="text/javascript" id="">console.log("GTM1P (dl.read): f2e95ae56167a937239bb67ab3a4565dd04485954f644000e8205bc6486a119a");</script></body></html>

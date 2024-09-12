@@ -1,48 +1,48 @@
-import requests
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+import time
 from bs4 import BeautifulSoup
 import pandas as pd
-import time
 
 def get_reviews(url):
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
-        'Accept-Language': 'en-US, en;q=0.5'
-    }
+    # Do not use headless mode to allow you to interact with the browser
+    options = webdriver.ChromeOptions()
     
-    reviews = []
-    page_num = 0
+    # Initialize the Chrome WebDriver
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+    # Open the TripAdvisor page
+    driver.get(url)
     
-    while True:
-        page_url = url + f"?page={page_num}"
-        response = requests.get(page_url, headers=headers)
-        
-        if response.status_code != 200:
-            print(f"Failed to retrieve data: {response.status_code}")
-            break
-        
-        soup = BeautifulSoup(response.text, 'html.parser')
-        review_blocks = soup.find_all('div', class_='review-container')
-        
-        if not review_blocks:
-            print("No more reviews found.")
-            break
-        
-        for block in review_blocks:
-            review = {}
-            review['title'] = block.find('a', class_='title').text.strip()
-            review['rating'] = block.find('span', class_='ui_bubble_rating')['class'][1].split('_')[-1]
-            review['date'] = block.find('span', class_='ratingDate')['title'].strip()
-            review['content'] = block.find('p', class_='partial_entry').text.strip()
-            
-            reviews.append(review)
-        
-        print(f"Scraped page {page_num}")
-        page_num += 1
-        
-        # To prevent getting blocked, you might want to include some delay
-        time.sleep(2)  # delay for 2 seconds
+    # Wait for the user to manually solve the CAPTCHA
+    input("Please solve the CAPTCHA in the browser, then press Enter to continue...")
+
+    # Once the CAPTCHA is solved, continue with scraping
+    time.sleep(3)  # Add a small delay to ensure the page has fully loaded
+
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+
+    save_to_html(soup.prettify(), f"content.html")
+
+    review_blocks = soup.find('section', id="REVIEWS")
+
+    if not review_blocks:
+        print("No more reviews found.")
+        return
     
+    save_to_html(review_blocks.prettify(), f"reviews/0.html")
+    
+    driver.quit()
     return reviews
+
+
+
+
+def save_to_html(content, filename):
+    with open(filename, 'w', encoding='utf-8') as f:
+        f.write(content)
+    print(f"Saved content to {filename}")
 
 def save_to_csv(reviews, filename):
     df = pd.DataFrame(reviews)
