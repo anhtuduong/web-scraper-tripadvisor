@@ -4,3 +4,4 @@ pandas
 selenium
 webdriver-manager
 selenium-stealth
+undetected-chromedriver

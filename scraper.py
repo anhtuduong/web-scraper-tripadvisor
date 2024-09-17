@@ -1,14 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains
 import undetected_chromedriver as uc
-from selenium_stealth import stealth
 import time
 from bs4 import BeautifulSoup
 import pandas as pd
-import random
 
 # ------------------------------
 
@@ -38,7 +34,6 @@ def get_reviews(driver, url):
 
         # Wait for the user to manually load more reviews
         input("Load more reviews and press Enter to continue...")
-        time.sleep(3)
     
     driver.quit()
 
@@ -48,20 +43,22 @@ def get_reviews(driver, url):
 def setup_driver():
     # WebDriver Options
     options = Options()
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    options.add_experimental_option('excludeSwitches', ['enable-automation'])
-    options.add_experimental_option('useAutomationExtension', False)
+
+    # options.add_argument("--disable-blink-features=AutomationControlled")
+    # options.add_experimental_option('excludeSwitches', ['enable-automation'])
+    # options.add_experimental_option('useAutomationExtension', False)
     
     # Setting Proxy 
     # proxy = "your.proxy.server:port"
     # options.add_argument(f'--proxy-server={proxy}')
     
     # Setting a User-Agent
-    user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
-    options.add_argument(f"user-agent={user_agent}")
+    # user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    # options.add_argument(f"--user-agent={user_agent}")
     
     # Initialize WebDriver
-    driver = webdriver.Chrome(options=options)
+    # driver = uc.Chrome(options=options)
+    driver = uc.Chrome()
     return driver
 
 def mimic_human_interaction(driver, url):
@@ -81,10 +78,6 @@ def save_to_html(content, filename):
         f.write(content)
     print(f"Saved content to {filename}")
 
-def save_to_csv(reviews, filename):
-    df = pd.DataFrame(reviews)
-    df.to_csv(filename, index=False, encoding='utf-8-sig')
-    print(f"Saved {len(reviews)} reviews to {filename}")
 
 # ------------------------------
 
