@@ -1,3 +1,4 @@
+import os
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
@@ -8,7 +9,7 @@ import pandas as pd
 
 # ------------------------------
 
-def get_reviews(driver, url):
+def get_reviews(driver, name, url):
 
     driver.get(url)
     
@@ -29,7 +30,7 @@ def get_reviews(driver, url):
             print("No more reviews found.")
             break
         
-        save_to_html(review_blocks.prettify(), f"reviews/page_{count}.html")
+        save_to_html(review_blocks.prettify(), f"reviews/{name}/page_{count}.html")
         count += 1
 
         # Wait for the user to manually load more reviews
@@ -74,6 +75,13 @@ def mimic_human_interaction(driver, url):
     time.sleep(2)
 
 def save_to_html(content, filename):
+    # Ensure the directory exists
+    folder = os.path.dirname(filename)
+    if not os.path.exists(folder):
+        os.makedirs(folder)  # Create the folder if it doesn't exist
+        print(f"Created directory: {folder}")
+    
+    # Save the content to the file
     with open(filename, 'w', encoding='utf-8') as f:
         f.write(content)
     print(f"Saved content to {filename}")
@@ -82,6 +90,7 @@ def save_to_html(content, filename):
 # ------------------------------
 
 if __name__ == "__main__":
-    url = "https://www.tripadvisor.com/Attraction_Review-g293924-d6786740-Reviews-Hanoi_Food_Tasting_Tours-Hanoi.html"
+    name = "Ha Food Tours"
+    url = "https://www.tripadvisor.co.uk/Attraction_Review-g293924-d12492674-Reviews-Ha_Food_Tours-Hanoi.html"
     driver = setup_driver()
-    get_reviews(driver, url)
+    get_reviews(driver, name, url)
